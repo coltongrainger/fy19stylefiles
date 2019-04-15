@@ -1,6 +1,6 @@
 % The purpose of this document is to test every aspect of my class file in as concise a manner as possible.
 % TODO a lot of it is missing...
-\documentclass[onesided]{../ccg-pset}
+\documentclass[onesided]{../../ccg-pset}
 
 \course{MATH 6120}
 \psnum{12}
@@ -11,38 +11,49 @@
 \maketitle
 
 \begin{enumerate}
-\item %1
-\label{first}
-The quick brown fox jumps over the lazy dog.
-\begin{thm}
-If \(\iota:\Z\inj\Q\) is the canonical injection, then \(\iota\) is an epimorphism which is not surjective;
-nonetheless, writing \(\Z\surj\Q\) would be confusing.
-\end{thm}
-Over \(\C\), all irreducible polynomials have degree \(1\), and over \(\R\), they all have degree \(1\) or \(2\).
-However, over \(\F_p\), they may have any positive degree. This makes life in \(\P\F_p\) more interesting.
-\begin{lem}
-There is a bijection \(\N\to\N\times\N\).
-\end{lem}
-\begin{proof}
-Count up each diagonal from \((0,0)\), then \((1,0))\) and \((0,1)\), then \((2,0)\), \((1,1)\), and \((0,2)\), and
-so on; then, every pair in \(\N\times\N\) will be reached at some finite step.
-\end{proof}
-\begin{claim}
-\(\Q\) is dense in \(\R\).
-\end{claim}
-\begin{claim*}
-\(\overline\Q\) is dense in \(\C\).
-\end{claim*}
-The derivative is defined by
-\begin{equation}
-\label{deriv}
-	\dv{f}{x} = \lim_{\e\to 0} \frac{f(x+\e) - f(x)}{\e},
-\end{equation}
-and the partial derivative by
-\begin{equation}
-	\pdv{\vp}{x_i} = \lim_{\e\to 0} \frac{\vp(\vec x+\e \vec\alpha_i) - \vp(\vec x)}{\e}.
-\end{equation}
-Notice the similarities to \eqref{deriv}.
+\item
+	\label{first}
+	The quick brown fox jumps over the lazy dog.
+
+	\begin{thm}
+	If \(\iota:\Z\inj\Q\) is the canonical injection, then \(\iota\) is an epimorphism which is not surjective;
+	nonetheless, writing \(\Z\surj\Q\) would be confusing.
+	\end{thm}
+
+	Over \(\C\), all irreducible polynomials have degree \(1\), and over \(\R\), they all have degree \(1\) or \(2\).
+	However, over \(\F_p\), they may have any positive degree. This makes life in \(\P\F_p\) more interesting.
+
+	\begin{lem}
+	There is a bijection \(\N\to\N\times\N\).
+	\end{lem}
+
+	\begin{proof}
+	Count up each diagonal from \((0,0)\), then \((1,0))\) and \((0,1)\), then \((2,0)\), \((1,1)\), and \((0,2)\), and
+	so on; then, every pair in \(\N\times\N\) will be reached at some finite step.
+	\end{proof}
+
+	\begin{claim}
+	\(\Q\) is dense in \(\R\).
+	\end{claim}
+
+	\begin{claim*}
+	\(\overline\Q\) is dense in \(\C\).
+	\end{claim*}
+
+	The derivative is defined by
+	\begin{equation}
+	\label{deriv}
+		\dv{f}{x} = \lim_{\e\to 0} \frac{f(x+\e) - f(x)}{\e},
+	\end{equation}
+	and the partial derivative by
+	\begin{equation}
+		\pdv{\vp}{x_i} = \lim_{\e\to 0} \frac{\vp(\vec x+\e \vec\alpha_i) - \vp(\vec x)}{\e}.
+	\end{equation}
+
+	Notice the similarities to \eqref{deriv}.
+
+	Will I still be able to make edits?
+
 \item And now we test delimiters. \label{second}
 \[\int_a^b f(x)\dd x = \lim_{n\to\infty}\paren{\paren{\frac{b-a}{n}}\sum_{j=1}^n f\paren{x_j^*}}.\]
 In one dimension,
