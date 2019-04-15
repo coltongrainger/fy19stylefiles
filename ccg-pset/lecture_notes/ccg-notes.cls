@@ -1,11 +1,13 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{minnotes_d}[2016/5/10 Arun Debray's minimal notes template]
+\ProvidesClass{ccg-notes}
+%
+%[2019-04-14 Colton's version of Arun Debray's lecture minimal notes template]
 %
 % A template for lectures notes that makes few stylistic changes, but has lots of
 % macros predefied for ease of live-TeXing.
 %
 % Provides a way to check whether this class is being used
-\def\UsingMinNotesD{}
+\def\UsingCCGNotes{}
 %
 % For now, this is a one-off that disables the " -> ^(...) feature.
 \DeclareOption{quotes}{\def\qu@es{YES}}
@@ -413,3 +415,120 @@
 \newcommand{\fr}{^{\mathrm{fr}}}
 %
 % to be continued (e.g. a good argmin and argmax)
+% this style file is borrowed from Arun Debray <ccg, 2019-04-14> %
+% the mistakes are my own %
+% The personal style choices I make for my lecture notes
+% One tantalizing idea is to make multiple style files representing several different
+% styles (e.g. I would prefer to use a different style for lecture notes and other
+% notes that I write).
+%
+% Current issues:
+% 1. This currently only supports article-based lecture notes (base class is amsart, and
+% much of the title page formatting depends on that rather than amsbook). Someday, I
+% would like to have both options.
+% 2. I still can't get fancyhdr to work the way I want it to.
+%
+\RequirePackage{fancyhdr}
+\RequirePackage{titlesec}
+\RequirePackage[dotinlabels]{titletoc}
+% after the font has been chosen
+\AtBeginDocument{
+ \usepackage{microtype}
+}
+%
+% Set colors for hyperref
+\hypersetup{
+ colorlinks,
+ linkcolor={red!50!black},
+ citecolor={green!50!black},
+ urlcolor={blue!80!black}
+}
+%
+% Custom section titles
+% I really want to not depend on titlesec, as it's frustrating to use. However,
+% this setup is stable.
+\titleformat{\section}[frame]
+  {\normalfont}
+  {\filright
+   \footnotesize
+   \enspace Lecture \arabic{section}.\enspace}
+  {8pt}
+  {\Large\bfseries\filcenter}
+\titlecontents{section}[1.5em]{}{\contentslabel{2.3em}}{\hspace*{-2.3em}}{\hfill\contentspage}
+%
+% Ornament to divide different parts of a section without introducing a new subsection
+\newcommand{\orbreak}{
+\begin{center}
+ \adforn{17}\;\(\cdot\)\;\adforn{18}
+ \vspace{0.2cm}
+\end{center}
+}
+%
+% some other stylistic changes
+\renewcommand{\vec}[1]{\boldsymbol{\mathbf{#1}}}
+% \def\qedsymbol{{\small{\ensuremath{\boxtimes}}}}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\epsilon}{\varepsilon}
+\renewcommand{\emptyset}{\varnothing}
+%
+% The user should specify the following information:
+% \institution: where the course was held, e.g. "UT Austin"
+% \coursenum: course dept. and number, e.g. "M364C"
+% \coursename: name of the course, e.g. "Galois Knot Theory"
+% \semester: when the course happened, e.g. "Fall 2016"
+% \teacher: who taught the course, e.g. "John Steinbeck"
+% \author: who took notes, e.g. "Ted Geisel"
+% \date: when these notes were last updated, e.g. \today (optional)
+% \email: the author's email, e.g. "seuss_on_the_loose@hotmail.com"
+% \thanks: an acknowledgement, e.g. "Thanks to Emily Dickinson for fixing a few typos" (optional)
+% Using the following commands, the user will be able to simply write
+% \institution{UT Austin}
+% \coursenum{M364C}
+% and so on.
+\newcommand*{\institution}[1]{\newcommand{\@institution}{#1}}
+\newcommand*{\coursenum}[1]{\newcommand{\@coursenum}{#1}}
+\newcommand*{\coursename}[1]{\newcommand{\@coursename}{#1}}
+\newcommand*{\semester}[1]{\newcommand{\@semester}{#1}}
+\newcommand*{\teacher}[1]{\newcommand{\@teacher}{#1}}
+\renewcommand*{\email}[1]{\newcommand{\@email}{#1}}
+\renewcommand{\@thanks}{\@empty}
+\renewcommand{\thanks}[1]{\renewcommand{\@thanks}{#1}}
+%
+\let\@oldauthor\author
+\newcommand*{\d@e}{\@empty}
+\renewcommand*{\author}[1]{\renewcommand{\@author}{#1}}
+\renewcommand*{\date}[1]{\renewcommand{\d@e}{#1}}
+%
+% These things should be defined after the user sets everything up in the preamble
+\AtBeginDocument{
+ % Email with a MAILTO: link
+ \newcommand{\linkedemail}{\href{mailto:\@email?subject=\@coursenum\%20Lecture\%20Notes}{\texttt{\@email}}}
+ %
+ % Front Stuff: standard blurb at the beginning of a document, ToC, etc.
+ % Once everything is set up, the user only needs to call \frontstuff.
+ %
+ % Format title based on amsart's own title command
+ \title{\@coursenum{} Notes: \MakeUppercase{\@coursename}}
+ \@oldauthor{\@author\\\d@e}
+ %
+ \newcommand{\@blurb}{
+  {\small These notes were taken in \@institution’s \@coursenum{} (\@coursename) class in \@semester, taught by \@teacher. I live-\TeX{}ed them with \texttt{vim}, so there may be typos and failures of understanding. Any mistakes are my own. Please send questions, comments, complaints, and corrections to \linkedemail. \@thanks}
+ }
+ %
+ \newcommand{\frontstuff}{
+  \maketitle
+  \@blurb
+  \tableofcontents
+ }
+ %
+ % Fancy headers
+ % TODO this doesn't work like I want it to, and I don't know how to fix it.
+ \renewcommand{\sectionmark}[1]{\markleft\thesection. #1}
+ %
+ \fancyhf{}
+ \fancyhead[RO,LE]{\small\thepage}
+ \fancyhead[LO]{\small\itshape\nouppercase{\leftmark}}
+ \fancyhead[RE]{\small\itshape \@coursenum{} (\@coursename) Lecture Notes}
+ \setlength{\headheight}{11.0pt}
+ \pagestyle{fancy}
+}

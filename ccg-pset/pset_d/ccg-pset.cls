@@ -1,10 +1,10 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{pset}[2019-04-14 Colton's version of Arun Debray's problem set template]
+\ProvidesClass{ccg-pset}[2019-04-14 Colton's version of Arun Debray's problem set template]
 % this template was forked from Arun Debray <ccg, 2019-04-14>
 % the mistakes are my own
 
 % Provides a switch gto check whether you're using this class (e.g. \ifdefined\UsingPsetD)
-\def\UsingPsetD{}
+\def\UsingCCGPset{}
 
 % Some package options
 % 1. Option `thminenum' (default) numbers theorems inside problem numbers, e.g. Theorem 27.1; `thmalone' numbers
