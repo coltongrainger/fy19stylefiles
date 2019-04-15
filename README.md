@@ -1,34 +1,50 @@
-I am transitioning away from pandoc towards latex proper for mathematical typesetting. Therefore, I have kindly forked the following style files from [adebray](https://web.ma.utexas.edu/users/a.debray/).
+I've noticed that I have a lot of LaTeX code duplication between different versions of my lecture
+notes, and so I've made this directory to unify everything, so I only have to access it in one
+place. I did something similar for my problem set template, but for notes it's a little more
+nuanced: I have the following constraints/goals:
 
-Here's the [original README](https://github.com/adebray/latex_style_files):
+- I would like a "rich base class" that contains all the modifications that I tend to apply to my
+  lecture notes, including stylistic modifications.
+  	* Ideally, it will be possible to use this class with things like title pages or other
+	  modifications ad lib.
+	* Since I've taken lecture notes using both the amsart and amsbook document classes, I would
+	  like this class to support both an article-like class and a book-like class (so, without
+	  chapters and with chapters). This is less essential.
+- I would like a "minimal base class" which contains only the macros that I consider necessary for
+  live-TeXing, and all of the packages I use to set this up, but with no stylistic changes.
+  	* This is a better choice for notes that other people might edit or help write.
+	* It's OK if this one only supports a book-like base class.
+- I would like to avoid duplicating code.
 
-> This repo holds a collection of LaTeX style files that I use for lecture notes and problem sets. I originally had
-> a separate style file for each class, but this led to some code duplication. Instead, collating these classes once
-> and for all will allow me to customize LaTeX in a uniform way.
-> 
-> This directory will contain a few different `.cls` files for problem sets, lecture notes (rich and minimal), and
-> possibly other things. I would also like to document the options I provide for these classes, explaining how to use
-> them and to provide some examples.
-> 
-> ### Current Status
-> 
-> This is still very much a work in progress, and even when it's "finished" I intend to add other useful commands or
-> tweak the style. Here's what exists now:
-> 
-> - The `pset_d` directory contains a style file for problem sets, `pset_d.cls`.  At this point, I'm using this class
->   for problem sets with no huge snafus.  There are a couple of things I still want to fix: specifically, I would
->   like the ability to define custom problem numbers such as `\item[2.A.]` and have the class automatically handle
->   things like equation numbering within that item or `\ref`s to that item; this is currently not in place. There
->   are also various smaller TODOs scattered throughout the file. I would also like to provide some more examples:
->   some minimal examples of how to use the class, and some richer examples of what problem sets look like in this
->   template, including demonstrating various class options.
-> - The `lecture_notes` directory contains some style files for lecture notes. Though I will still need to make
->   minor changes to these files, I believe the bulk of the work is done. There are three classes: a minimal class,
->   `minnotes_d`, which only includes the shortcuts I define for live-TeXing; `lightnotes_d`, which makes a very
->   small number of stylistic changes, and `notes_d`, which implements the full set of style changes that I use
->   when taking lecture notes. All of these classes have been tested: I expect minor fixes to be necessary, and I
->   will update my macros and notes style, but hopefully nothing major will be needed.
-> - Right now, these two do not share any code. That is something I would like to fix, but first I should get
->   everything up and running. Since class files cannot include relative path names, I have to use a workaround
->   to get them to share code: I'm using `cpp` to preprocess the files in the `lecture_notes` directory, which
->   seems to mostly work.
+Given this, I use the following layout:
+
+- `style.tex`, which includes packages and applies settings that produce the typical style of my
+   lecture notes.
+- `packages.tex`, which includes packages that aren't style-focused, e.g. `inputenc`.
+- `macros.tex`, which contains shortcuts I define for ease of TeXing.
+	- `xy_macros.tex` for those macros specific to Xy.
+	- `letters.tex` will contain shortcuts for commands I use involving \mathbb, \mathcal, \mathscr,
+	   etc.
+	- `theorems.tex` will contain all definitions of theorem environments.
+- A `notes_d` document class, which includes everything.
+- A `minnotes_d` document class which includes `macros.tex`.
+- A `lightnotes_d` document class which adds a few small personal style changes to `minnotes_d`.
+  So far I've been using `lightnotes_d` to take notes in seminars, whereas `notes_d` will be used for classes.
+
+### Current Status
+
+- The class files in this directory can be used in your TeX documents; they were built out of the files in
+  the `src/` directory using the Makefile.
+- I've used `minnotes_d` and `lightnotes_d` in a few seminars and they seem to be working well. There
+  are probably a few definitions that I'll need to wrap in `\AtBeginDocument`, depending on which font
+  packages I like redefine them, but overall I'm satisfied.
+- I've tested `notes_d` on an old set of lecture notes, and it seems to be working fairly well. There are
+  some small issues I would still like to fix, but none that yet stand in the way of using it for lecture
+  notes.
+- I will likely be updating my macros whenever I discover new useful ones.
+- `.cls` files are not allowed to include files through relative class names, so in order to share code
+  between these classes, I used `cpp` to process these files into the finalized document classes. This
+  is obviously out of the intended scope of `cpp`, and so imposes a few quirky constraints on the TeX code,
+  but these are surmountable.
+- These classes aren't compatible with the `\VerbatimFootnotes` command from the `fancyvrb` command. I do not
+  know why this is, but I'll be debugging it.
