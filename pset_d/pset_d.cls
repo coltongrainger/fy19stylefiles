@@ -237,13 +237,13 @@
 % let's see if this works (won't work for nested items, yet)
 % adapted from http://tex.stackexchange.com/a/97437/55879
 % TODO this causes the description environment to fail horribly
-% \let\@olditem\item
-% \renewcommand{\item}[1][]{%
-% 	%\stepcounter{enumi}
-% 	\if\relax\detokenize{#1}\relax
-% 		\def\thisitem{\arabic{enumi}}%
-% 	\else
-% 		\def\thisitem{#1}%
-% 	\fi
-% 	\@olditem%
-% }
+%\let\@olditem\item
+%\renewcommand{\item}[1][]{%
+%	%\stepcounter{enumi}
+%	\if\relax\detokenize{#1}\relax
+%		\def\thisitem{\arabic{enumi}}%
+%	\else
+%		\def\thisitem{#1}%
+%	\fi
+%	\@olditem%
+%}
