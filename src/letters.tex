@@ -6,6 +6,7 @@
 % \mathbb -- notable sets
 % TODO: would be nice to allow people to override \mathbb with \mathbf
 \newcommand{\A}{\mathbb A} % affine space
+\newcommand{\B}{\mathbb B} % unit ball
 \newcommand{\C}{\mathbb C} % complex numbers
 \newcommand{\D}{\mathbb D} % unit disc inside \C
 \newcommand{\E}{\mathbb E} % expected value, family of operads
@@ -14,6 +15,7 @@
 \AtBeginDocument{ % some fonts redefine this (e.g. charter)
 	\renewcommand{\H}{\mathbb H} % quaternions, upper half-plane
 }
+\newcommand{\kk}{\mathbb k} % field
 \newcommand{\N}{\mathbb N} % natural numbers
 \renewcommand{\P}{\mathbb P} % probability, projective space
 \newcommand{\Q}{\mathbb Q} % rational numbers
@@ -29,13 +31,12 @@
 \newcommand{\cG}{\mathcal G} % groupoid
 \newcommand{\cH}{\mathcal H} % Hilbert space
 \newcommand{\cM}{\mathcal M} % moduli space
-\newcommand{\cX}{\mathcal X} % vector fields, tangential structures
 
 % \mathfrak -- Lie algebras, open covers, prime ideals
 \newcommand{\p}{\mathfrak p} % prime ideal
 \newcommand{\q}{\mathfrak q} % another prime ideal
 \newcommand{\m}{\mathfrak m} % maximal ideal
-\newcommand{\fg}{\mathfrak g} % general Lie algebra
+\newcommand{\g}{\mathfrak g} % general Lie algebra
 \newcommand{\gl}{\mathfrak{gl}} % general linear Lie algebra
 \renewcommand{\sl}{\mathfrak{sl}} % special linear
 \renewcommand{\sp}{\mathfrak{sp}} % symplectic
@@ -44,6 +45,7 @@
 \newcommand{\fu}{\mathfrak u} % unitary
 \newcommand{\su}{\mathfrak{su}} % special unitary
 \newcommand{\fU}{\mathfrak U} % open covers, à la Bott-Tu
+\newcommand{\X}{\mathfrak X} % vector fields, tangential structures
 
 % \mathrm -- usually Lie groups
 \newcommand{\GL}{\mathrm{GL}} % general linear
@@ -95,3 +97,9 @@
 	\newcat{\Man}{Man} % manifolds
 	\newcat{\Fun}{Fun} % functor categories
 }
+
+% stylistic choices that I would like to have for the pset class
+\renewcommand{\vec}[1]{\boldsymbol{\mathbf{#1}}}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\epsilon}{\varepsilon}
+\renewcommand{\emptyset}{\varnothing}

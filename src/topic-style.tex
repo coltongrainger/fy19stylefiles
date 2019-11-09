@@ -1,16 +1,6 @@
 % this style file is borrowed from Arun Debray <ccg, 2019-04-14> %
 % the mistakes are my own %
 
-% The personal style choices I make for my lecture notes
-% One tantalizing idea is to make multiple style files representing several different
-% styles (e.g. I would prefer to use a different style for lecture notes and other
-% notes that I write).
-%
-% Current issues:
-%   1. This currently only supports article-based lecture notes (base class is amsart, and
-%      much of the title page formatting depends on that rather than amsbook). Someday, I
-%      would like to have both options.
-%   2. I still can't get fancyhdr to work the way I want it to.
 %
 \RequirePackage{fancyhdr}
 \RequirePackage{titlesec}
@@ -35,7 +25,7 @@
   {\normalfont}
   {\filright
    \footnotesize
-   \enspace Lecture \arabic{section}.\enspace}
+   \enspace \arabic{section}.\enspace}
   {8pt}
   {\Large\bfseries\filcenter}
 \titlecontents{section}[1.5em]{}{\contentslabel{2.3em}}{\hspace*{-2.3em}}{\hfill\contentspage}
@@ -52,11 +42,11 @@
 % \def\qedsymbol{{\small{\ensuremath{\boxtimes}}}}
 %
 % The user should specify the following information:
+%	\topic: what's this document? Neither lecture notes nor a problem set.
 %	\institution: where the course was held, e.g. "UT Austin"
 %	\coursenum: course dept. and number, e.g. "M364C"
 %	\coursename: name of the course, e.g. "Galois Knot Theory"
 %	\semester: when the course happened, e.g. "Fall 2016"
-%	\teacher: who taught the course, e.g. "John Steinbeck"
 %	\author: who took notes, e.g. "Ted Geisel"
 %	\date: when these notes were last updated, e.g. \today (optional)
 %	\email: the author's email, e.g. "seuss_on_the_loose@hotmail.com"
@@ -69,7 +59,7 @@
 \newcommand*{\coursenum}[1]{\newcommand{\@coursenum}{#1}}
 \newcommand*{\coursename}[1]{\newcommand{\@coursename}{#1}}
 \newcommand*{\semester}[1]{\newcommand{\@semester}{#1}}
-\newcommand*{\teacher}[1]{\newcommand{\@teacher}{#1}}
+\newcommand*{\topic}[1]{\newcommand{\@topic}{#1}}
 \renewcommand*{\email}[1]{\newcommand{\@email}{#1}}
 \renewcommand{\@thanks}{\@empty}
 \renewcommand{\thanks}[1]{\renewcommand{\@thanks}{#1}}
@@ -82,17 +72,17 @@
 % These things should be defined after the user sets everything up in the preamble
 \AtBeginDocument{
 	% Email with a MAILTO: link
-	\newcommand{\linkedemail}{\href{mailto:\@email?subject=\@coursenum\%20Lecture\%20Notes}{\texttt{\@email}}}
+	\newcommand{\linkedemail}{\href{mailto:\@email?subject=\@coursenum\%20\@topic}{\texttt{\@email}}}
 	%
 	% Front Stuff: standard blurb at the beginning of a document, ToC, etc.
 	% Once everything is set up, the user only needs to call \frontstuff.
 	%
 	% Format title based on amsart's own title command
-	\title{\@coursenum{} Notes: \MakeUppercase{\@coursename}}
+    \title{\@coursenum{}: \MakeUppercase{\@topic}}
 	\@oldauthor{\@author\\\d@e}
 	%
 	\newcommand{\@blurb}{
-        {\small These notes were taken during \@institution’s \@coursenum{} (\@coursename) class in \@semester, taught by \@teacher. I hurriedly \TeX{}ed them to keep up with lectures. A reader will almost surely find typos and failures of understanding. \emph{All mistakes are my own}. I would appreciate corrections, questions, or complaints at \linkedemail. \@thanks}
+		{\small This was prepared for \@institution’s \@coursenum{} (\@coursename) in \@semester. Please send questions, comments, complaints, and corrections to \linkedemail. Any mistakes are my own. \@thanks}
 	}
 	%
 	\newcommand{\frontstuff}{
@@ -108,7 +98,7 @@
 	\fancyhf{}
 	\fancyhead[RO,LE]{\small\thepage}
 	\fancyhead[LO]{\small\itshape\nouppercase{\leftmark}}
-	\fancyhead[RE]{\small\itshape \@coursenum{} (\@coursename) Lecture Notes}
+	\fancyhead[RE]{\small\itshape \@coursenum{}: \@topic}
 	\setlength{\headheight}{11.0pt}
 	\pagestyle{fancy}
 }

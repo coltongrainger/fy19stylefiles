@@ -13,7 +13,8 @@
 \setcounter{tocdepth}{1}
 %
 % These can be changed downstream
-\newcommand{\term}{\emph} % e.g. "The \term{trace} is defined to be..."
+\makeindex % https://en.wikibooks.org/wiki/LaTeX/Indexing
+\newcommand{\term}[1]{\emph{#1}\index{#1}} % e.g. "The \term{trace} is defined to be..."
 \newcommand{\latin}{\textit} % e.g. \latin{per se}, \latin{mutatis mutandis}
 %
 % Often, I find myself making a theorem, definition, etc. that's purely a combination
@@ -80,6 +81,9 @@
 % det (defined in amsmath)
 \newoperator{End}
 \newoperator{Ext}
+\AtBeginDocument{ % some packages redefine this
+	\RenewMathOperator{\ev}{ev} 
+}
 \newoperator{Frac}
 \newoperator{Gal}
 \newoperator{Hom}
@@ -88,9 +92,6 @@
 	\RenewMathOperator{\Im}{Im} % also complex analysis
 }
 \newoperator{Mat}
-\AtBeginDocument{ % some packages redefine this
-	\RenewMathOperator{\Im}{Im} % also complex analysis
-}
 \renewcommand{\op}{^{\cat{op}}} % for the opposite of a category
 \newcommand{\rop}{^{\mathrm{op}}} % for the opposite of an algebra or monoid
 \AtBeginDocument{ 
@@ -99,18 +100,23 @@
 \newoperator{sign}
 % \newoperator{span} 
 \newoperator{Stab}
+\newoperator{Syl}
+\newoperator{Fix}
+\newoperator{Orb}
+\newoperator{core}
 \newoperator{Norm}
 \newoperator{Sym}
 \newoperator{Tor}
 % \newoperator{tr} (defined in physics)
 \newcommand{\bl}{\text{--}}
+\newcommand{\nrel}{\triangleleft}
 %
 % Algebraic Geometry
 \newoperator{Proj}
 \newoperator{QCoh}
 \newoperator{res} % also complex analysis
 \newoperator{Spec}
-%
+
 % Algebraic Topology
 \newcommand{\Gr}{\mathrm{Gr}} % Grassmannian -- perhaps move to letters.tex
 \newcommand{\hdr}{H_{\mathrm{dR}}}
@@ -157,6 +163,8 @@
 \RenewMathOperator{\div}{div}
 \newoperator{ind}
 \newoperator{supp}
+\newoperator{Cl}
+\newoperator{Int}
 %
 % TQFT
 \newcommand{\Bord}{\cat{Bord}}

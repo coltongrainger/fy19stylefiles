@@ -1,19 +1,27 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{ccg-pset}[2019-04-14 Colton's version of Arun Debray's problem set template]
-% This template was forked from Arun Debray <ccg, 2019-04-14>. The mistakes are my own.
-% Provides a switch gto check whether you're using this class (e.g. \ifdefined\UsingPsetD)
-\def\UsingCCGPset{}
-% Provides a switch gto check whether you're using this class (e.g. \ifdefined\UsingPsetD)
-% Option 'onesided' places a header on each page; `twosided' (default) on each odd-numbered page.
-\DeclareOption{onesided}{\def\@nesided{}}
-\DeclareOption{twosided}{}
+\ProvidesClass{ccg-topic}
+%
+% Provides a way to check whether this class is being used
+\def\UsingCCGTopic{}
+%
+% For now, this is a one-off that disables the " -> ^(...) feature.
+\DeclareOption{quotes}{\def\qu@es{YES}}
+\DeclareOption{no_quotes}{\def\noqu@es{}}
+\ExecuteOptions{quotes}
+%
+% Do I want any package options?
+% Possibilities:
+% 1. \mathbb vs. \mathbf for N, Z, Q, R, ...
+% 2. Roman or italic d in f(x) dx
+%
 % Other options can be handed off to the amsart class (e.g. fontsize)
+% TODO: for larger notes, I want to use amsbook instead. How should I efficiently unify
+% this with shorter notes, which use amsart?
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{amsart}}
-\ExecuteOptions{twosided}
+%
 \ProcessOptions\relax
-\LoadClass[reqno]{amsart}
-% fakesection: import packages shared with ccg-notes.cls %
-% namely physics %
+%
+\LoadClass{amsart}
 % This has to be put before cleveref for links to work correctly
 \numberwithin{equation}{section}
 %
@@ -34,42 +42,6 @@
 \RequirePackage[backref=page]{hyperref}
 \RequirePackage[all]{hypcap}
 \RequirePackage[capitalize, noabbrev]{cleveref}
-% fakesection: header and page labels %
-% Sets up the title -- each document specifies the \title, \author, \course,
-% \psnum, and \date, and \maketitle formats the title based on those
-% constraints. TODO may want to rearrange
-\newcommand{\@uthor}{\@empty}
-\newcommand{\c@urse}{\@empty}
-\newcommand{\psn@m}{\@empty}
-\newcommand{\d@e}{\@empty}
-\let\@oldauthor\author % preserves original amsart definitions
-\renewcommand{\author}[1]{\renewcommand{\@uthor}{#1}}
-\newcommand*{\course}[1]{\renewcommand{\c@urse}{\MakeUppercase{#1}}}
-\newcommand*{\psnum}[1]{\renewcommand{\psn@m}{#1}}
-\renewcommand*{\date}[1]{\renewcommand{\d@e}{#1}}
-% Format title based on amsart's native title command
-\title{\c@urse{} Homework \psn@m}
-\@oldauthor{\@uthor\\\d@e}
-% The header is primarily for keeping the document organized, e.g. if the pages
-% are separated, it should be easy to put it back together. Options `onesided'
-% and `twosided' determine whether the header is on each odd-numbered page or
-% all pages.
-\RequirePackage{fancyhdr}
-% Format: FIRST LAST COURSE-NUMBER HW-NUMBER
-\newcommand{\he@der}{\footnotesize{\MakeUppercase{\@uthor{}} \c@urse{} HW\psn@m}}
-\pagestyle{fancy}
-\fancyfoot[C]{\footnotesize{\thepage}}
-\fancyhead[L,R]{}
-\ifdefined\@nesided
- \fancyhead[C]{\he@der}
-\else
- \fancyhead[CO]{\he@der}
-\fi
-\renewcommand{\headrulewidth}{0pt}
-% fakesection: equation numbering %
-% truly distracting %
-\numberwithin{equation}{enumi}
-% fakesection: mathmacros shared with ccg-notes.cls %
 % Some shortcuts that simplify live-TeXing using XY.
 %
 % Forces all XY entries to be typeset with displaymath, which is much more
@@ -452,34 +424,110 @@
 \newcommand{\fr}{^{\mathrm{fr}}}
 %
 % to be continued (e.g. a good argmin and argmax)
-% fakesection: theorems %
-% Numbered (thm, lem) environments are already coming in from theorems.tex via
-% macros.tex. here we provide unnumbered (thm*, lem*) versions theorems are
-% numbered within problems, as forced by \numberwithin{equation}{enumi}
-\newtheorem*{thm*}{Theorem}
-\newtheorem*{lem*}{Lemma}
-\newtheorem*{prop*}{Proposition}
-\newtheorem*{coro*}{Corollary}
-\theoremstyle{definition}
-\newtheorem*{claim*}{Claim}
-\newtheorem*{defn*}{Definition}
-\newtheorem*{todo*}{Exercise}
-% Problem numbering. By default, problems are numbered in bold, with a period at
-% the end: 1. 2. 3. I also adjusted the spacing of lists: after every item in a
-% list, there is a little space, and inside itemize or enumerate environments,
-% paragraphs are double-spaced rather than indented. I found this to look less
-% cramped, and therefore easier to read.
-% TODO: oftentimes, I must specify the problem number by hand, e.g. as
-% `\item[3.4.]`. When this happens, the bold formatting is lost, and references
-% to that item don't automatically use 3.4 (indeed, the item counter isn't even
-% updated). This is the current major thing I want to fix in this package.
-\RequirePackage{enumitem}
-\def\thisitem{\empty}
-\setlist{parsep=1.5ex, listparindent=0cm}
-\setlist[enumerate, 1]{label=\textbf{\arabic*.},
-        %\textbf{\protect\thisitem.},
-        %ref={\protect\thisitem},
-        ref=\arabic{enumi},
-        leftmargin=0cm,
-        parsep=2ex
-       }
+\renewcommand{\indexname}{Index of Terms and Keywords}
+\newcommand{\vocab}[1]{\fbox{#1}\index{#1}} % e.g. "The \term{trace} is defined to be..."
+\newcommand{\kw}[1]{\fbox{\color{blue}#1}\index{#1}} % e.g. "The \term{trace} is defined to be..."
+\newcommand{\ask}[1]{\fbox{\color{blue}#1}} % e.g. "The \term{trace} is defined to be..."
+% this style file is borrowed from Arun Debray <ccg, 2019-04-14> %
+% the mistakes are my own %
+%
+\RequirePackage{fancyhdr}
+\RequirePackage{titlesec}
+\RequirePackage[dotinlabels]{titletoc}
+% after the font has been chosen
+\AtBeginDocument{
+ \usepackage{microtype}
+}
+%
+% Set colors for hyperref
+\hypersetup{
+ colorlinks,
+ linkcolor={red!50!black},
+ citecolor={green!50!black},
+ urlcolor={blue!80!black}
+}
+%
+% Custom section titles
+% I really want to not depend on titlesec, as it's frustrating to use. However,
+% this setup is stable.
+\titleformat{\section}[frame]
+  {\normalfont}
+  {\filright
+   \footnotesize
+   \enspace \arabic{section}.\enspace}
+  {8pt}
+  {\Large\bfseries\filcenter}
+\titlecontents{section}[1.5em]{}{\contentslabel{2.3em}}{\hspace*{-2.3em}}{\hfill\contentspage}
+%
+% Ornament to divide different parts of a section without introducing a new subsection
+\newcommand{\orbreak}{
+\begin{center}
+ \adforn{17}\;\(\cdot\)\;\adforn{18}
+ \vspace{0.2cm}
+\end{center}
+}
+%
+% some other stylistic changes
+% \def\qedsymbol{{\small{\ensuremath{\boxtimes}}}}
+%
+% The user should specify the following information:
+% \topic: what's this document? Neither lecture notes nor a problem set.
+% \institution: where the course was held, e.g. "UT Austin"
+% \coursenum: course dept. and number, e.g. "M364C"
+% \coursename: name of the course, e.g. "Galois Knot Theory"
+% \semester: when the course happened, e.g. "Fall 2016"
+% \author: who took notes, e.g. "Ted Geisel"
+% \date: when these notes were last updated, e.g. \today (optional)
+% \email: the author's email, e.g. "seuss_on_the_loose@hotmail.com"
+% \thanks: an acknowledgement, e.g. "Thanks to Emily Dickinson for fixing a few typos" (optional)
+% Using the following commands, the user will be able to simply write
+% \institution{UT Austin}
+% \coursenum{M364C}
+% and so on.
+\newcommand*{\institution}[1]{\newcommand{\@institution}{#1}}
+\newcommand*{\coursenum}[1]{\newcommand{\@coursenum}{#1}}
+\newcommand*{\coursename}[1]{\newcommand{\@coursename}{#1}}
+\newcommand*{\semester}[1]{\newcommand{\@semester}{#1}}
+\newcommand*{\topic}[1]{\newcommand{\@topic}{#1}}
+\renewcommand*{\email}[1]{\newcommand{\@email}{#1}}
+\renewcommand{\@thanks}{\@empty}
+\renewcommand{\thanks}[1]{\renewcommand{\@thanks}{#1}}
+%
+\let\@oldauthor\author
+\newcommand*{\d@e}{\@empty}
+\renewcommand*{\author}[1]{\renewcommand{\@author}{#1}}
+\renewcommand*{\date}[1]{\renewcommand{\d@e}{#1}}
+%
+% These things should be defined after the user sets everything up in the preamble
+\AtBeginDocument{
+ % Email with a MAILTO: link
+ \newcommand{\linkedemail}{\href{mailto:\@email?subject=\@coursenum\%20\@topic}{\texttt{\@email}}}
+ %
+ % Front Stuff: standard blurb at the beginning of a document, ToC, etc.
+ % Once everything is set up, the user only needs to call \frontstuff.
+ %
+ % Format title based on amsart's own title command
+    \title{\@coursenum{}: \MakeUppercase{\@topic}}
+ \@oldauthor{\@author\\\d@e}
+ %
+ \newcommand{\@blurb}{
+  {\small This was prepared for \@institution’s \@coursenum{} (\@coursename) in \@semester. Please send questions, comments, complaints, and corrections to \linkedemail. Any mistakes are my own. \@thanks}
+ }
+ %
+ \newcommand{\frontstuff}{
+  \maketitle
+  \@blurb
+  \tableofcontents
+ }
+ %
+ % Fancy headers
+ % TODO this doesn't work like I want it to, and I don't know how to fix it.
+ \renewcommand{\sectionmark}[1]{\markleft\thesection. #1}
+ %
+ \fancyhf{}
+ \fancyhead[RO,LE]{\small\thepage}
+ \fancyhead[LO]{\small\itshape\nouppercase{\leftmark}}
+ \fancyhead[RE]{\small\itshape \@coursenum{}: \@topic}
+ \setlength{\headheight}{11.0pt}
+ \pagestyle{fancy}
+}

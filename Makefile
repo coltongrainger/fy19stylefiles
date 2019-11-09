@@ -5,7 +5,7 @@
 CPPFLAGS = -nostdinc -w -P -C
 
 INPUTS = src/*.tex
-OUTPUTS = ccg-notes.cls ccg-pset.cls
+OUTPUTS = ccg-notes.cls ccg-pset.cls ccg-topic.cls
 
 all: $(OUTPUTS)
 

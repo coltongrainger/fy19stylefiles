@@ -32,7 +32,7 @@
 %
 \RequirePackage[utf8]{inputenc}
 % Keeping this because, even for minimal notes, makes printing take up considerably less paper
-\RequirePackage[margin=1in]{geometry}
+\RequirePackage[margin=0.75in]{geometry}
 \RequirePackage[usenames, dvipsnames]{xcolor}
 \RequirePackage{graphicx}
 \RequirePackage{mathtools}
@@ -119,6 +119,7 @@
 % \mathbb -- notable sets
 % TODO: would be nice to allow people to override \mathbb with \mathbf
 \newcommand{\A}{\mathbb A} % affine space
+\newcommand{\B}{\mathbb B} % unit ball
 \newcommand{\C}{\mathbb C} % complex numbers
 \newcommand{\D}{\mathbb D} % unit disc inside \C
 \newcommand{\E}{\mathbb E} % expected value, family of operads
@@ -127,6 +128,7 @@
 \AtBeginDocument{ % some fonts redefine this (e.g. charter)
  \renewcommand{\H}{\mathbb H} % quaternions, upper half-plane
 }
+\newcommand{\kk}{\mathbb k} % field
 \newcommand{\N}{\mathbb N} % natural numbers
 \renewcommand{\P}{\mathbb P} % probability, projective space
 \newcommand{\Q}{\mathbb Q} % rational numbers
@@ -141,12 +143,11 @@
 \newcommand{\cG}{\mathcal G} % groupoid
 \newcommand{\cH}{\mathcal H} % Hilbert space
 \newcommand{\cM}{\mathcal M} % moduli space
-\newcommand{\cX}{\mathcal X} % vector fields, tangential structures
 % \mathfrak -- Lie algebras, open covers, prime ideals
 \newcommand{\p}{\mathfrak p} % prime ideal
 \newcommand{\q}{\mathfrak q} % another prime ideal
 \newcommand{\m}{\mathfrak m} % maximal ideal
-\newcommand{\fg}{\mathfrak g} % general Lie algebra
+\newcommand{\g}{\mathfrak g} % general Lie algebra
 \newcommand{\gl}{\mathfrak{gl}} % general linear Lie algebra
 \renewcommand{\sl}{\mathfrak{sl}} % special linear
 \renewcommand{\sp}{\mathfrak{sp}} % symplectic
@@ -155,6 +156,7 @@
 \newcommand{\fu}{\mathfrak u} % unitary
 \newcommand{\su}{\mathfrak{su}} % special unitary
 \newcommand{\fU}{\mathfrak U} % open covers, à la Bott-Tu
+\newcommand{\X}{\mathfrak X} % vector fields, tangential structures
 % \mathrm -- usually Lie groups
 \newcommand{\GL}{\mathrm{GL}} % general linear
 \newcommand{\SL}{\mathrm{SL}} % special linear
@@ -203,6 +205,11 @@
  \newcat{\Man}{Man} % manifolds
  \newcat{\Fun}{Fun} % functor categories
 }
+% stylistic choices that I would like to have for the pset class
+\renewcommand{\vec}[1]{\boldsymbol{\mathbf{#1}}}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\epsilon}{\varepsilon}
+\renewcommand{\emptyset}{\varnothing}
 % Setting up some theorem environments
 %
 % The "exampx" and similar provisional environments are in use so that I can
@@ -264,7 +271,8 @@
 \setcounter{tocdepth}{1}
 %
 % These can be changed downstream
-\newcommand{\term}{\emph} % e.g. "The \term{trace} is defined to be..."
+\makeindex % https://en.wikibooks.org/wiki/LaTeX/Indexing
+\newcommand{\term}[1]{\emph{#1}\index{#1}} % e.g. "The \term{trace} is defined to be..."
 \newcommand{\latin}{\textit} % e.g. \latin{per se}, \latin{mutatis mutandis}
 %
 % Often, I find myself making a theorem, definition, etc. that's purely a combination
@@ -331,6 +339,9 @@
 % det (defined in amsmath)
 \newoperator{End}
 \newoperator{Ext}
+\AtBeginDocument{ % some packages redefine this
+ \RenewMathOperator{\ev}{ev}
+}
 \newoperator{Frac}
 \newoperator{Gal}
 \newoperator{Hom}
@@ -339,9 +350,6 @@
  \RenewMathOperator{\Im}{Im} % also complex analysis
 }
 \newoperator{Mat}
-\AtBeginDocument{ % some packages redefine this
- \RenewMathOperator{\Im}{Im} % also complex analysis
-}
 \renewcommand{\op}{^{\cat{op}}} % for the opposite of a category
 \newcommand{\rop}{^{\mathrm{op}}} % for the opposite of an algebra or monoid
 \AtBeginDocument{
@@ -350,18 +358,22 @@
 \newoperator{sign}
 % \newoperator{span}
 \newoperator{Stab}
+\newoperator{Syl}
+\newoperator{Fix}
+\newoperator{Orb}
+\newoperator{core}
 \newoperator{Norm}
 \newoperator{Sym}
 \newoperator{Tor}
 % \newoperator{tr} (defined in physics)
 \newcommand{\bl}{\text{--}}
+\newcommand{\nrel}{\triangleleft}
 %
 % Algebraic Geometry
 \newoperator{Proj}
 \newoperator{QCoh}
 \newoperator{res} % also complex analysis
 \newoperator{Spec}
-%
 % Algebraic Topology
 \newcommand{\Gr}{\mathrm{Gr}} % Grassmannian -- perhaps move to letters.tex
 \newcommand{\hdr}{H_{\mathrm{dR}}}
@@ -408,6 +420,8 @@
 \RenewMathOperator{\div}{div}
 \newoperator{ind}
 \newoperator{supp}
+\newoperator{Cl}
+\newoperator{Int}
 %
 % TQFT
 \newcommand{\Bord}{\cat{Bord}}
@@ -465,11 +479,7 @@
 }
 %
 % some other stylistic changes
-\renewcommand{\vec}[1]{\boldsymbol{\mathbf{#1}}}
 % \def\qedsymbol{{\small{\ensuremath{\boxtimes}}}}
-\renewcommand{\phi}{\varphi}
-\renewcommand{\epsilon}{\varepsilon}
-\renewcommand{\emptyset}{\varnothing}
 %
 % The user should specify the following information:
 % \institution: where the course was held, e.g. "UT Austin"
@@ -512,7 +522,7 @@
  \@oldauthor{\@author\\\d@e}
  %
  \newcommand{\@blurb}{
-  {\small These notes were taken in \@institution’s \@coursenum{} (\@coursename) class in \@semester, taught by \@teacher. I live-\TeX{}ed them with \texttt{vim}, so there may be typos and failures of understanding. Any mistakes are my own. Please send questions, comments, complaints, and corrections to \linkedemail. \@thanks}
+        {\small These notes were taken during \@institution’s \@coursenum{} (\@coursename) class in \@semester, taught by \@teacher. I hurriedly \TeX{}ed them to keep up with lectures. A reader will almost surely find typos and failures of understanding. \emph{All mistakes are my own}. I would appreciate corrections, questions, or complaints at \linkedemail. \@thanks}
  }
  %
  \newcommand{\frontstuff}{

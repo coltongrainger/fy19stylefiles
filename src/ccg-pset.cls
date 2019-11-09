@@ -86,6 +86,8 @@
 \newtheorem*{coro*}{Corollary}
 \theoremstyle{definition}
 \newtheorem*{claim*}{Claim}
+\newtheorem*{defn*}{Definition}
+\newtheorem*{todo*}{Exercise}
 
 % Problem numbering. By default, problems are numbered in bold, with a period at
 % the end: 1. 2. 3. I also adjusted the spacing of lists: after every item in a
